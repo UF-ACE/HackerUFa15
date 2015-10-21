@@ -42,28 +42,26 @@ if __name__ == '__main__':
 	api.Init(".","eng",tesseract.OEM_DEFAULT)
 	api.SetPageSegMode(tesseract.PSM_AUTO)
 
-	''' TODO ''''
-	# Make text bold
-	# Set type size to large, accepts 'S', 'M', 'L'
-	# Center the text to leave lots of whitespace 
+	printer.boldOn()	# Make text bold
+	printer.setSize('L')    # Set type size, accepts 'S', 'M', 'L'
+	printer.justify('C')	# Center the text to leave lots of whitespace 
 
 	while(True):
+		''' Prompt the user to enter some text to be recognized by python-tesseract '''
+		text_to_print = raw_input("Enter text: ")	
 		
-		''' TODO '''
-		# Prompt the user to enter some text to be recognized by python-tesseract 
-				
 		# Alert user that we are printing
 		print("Printing...")	
 	
-		''' TODO '''
-		# Print the user's text out 
-				
+		''' Print the user's text out '''
+		printer.println(text_to_print)
+		
 		time.sleep(1)	
 		
 		print "Tear off the printed text from printer and show it to the webcam!"
 		print "Press 'q' to snap the picture"
 
-		# capture and store frame in variable img
+		# store frame in variable img
 		img = capture()
 
 		# scale the image up to twice its size to assist with OCR
@@ -73,20 +71,18 @@ if __name__ == '__main__':
 		cv2.imwrite("tmp.jpg", scaled_img)
 		cv_image = cv2.cv.LoadImage("tmp.jpg", cv2.cv.CV_LOAD_IMAGE_GRAYSCALE)
 
-		''' TODO '''
-		# Call python-teseract and attempt to decode text in image
-		
-		# Get the confidence value from the OCR operation		
+		''' Call python-teseract and attempt to decode text in image '''
+		tesseract.SetCvImage(cv_image, api)
+		result = api.GetUTF8Text()
 		conf = api.MeanTextConf()
 	
 		# Remove unecessary whitespace from output text
 		result.strip()
-
 		if result: 
-			''' TODO '''
-			# Print out result 
-			# For fun, have the printer say something like "You said  _____"
-			
+			''' Print out result '''
+			printer.println("You said")
+			printer.println(result)
+			print "OCR success: ", result
 			print "Confidence level: %d %%"%conf
 		else: 
 			print "OCR failed, please try again!"
