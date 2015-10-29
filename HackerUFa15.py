@@ -42,7 +42,7 @@ if __name__ == '__main__':
 	api.Init(".","eng",tesseract.OEM_DEFAULT)
 	api.SetPageSegMode(tesseract.PSM_AUTO)
 
-	''' TODO ''''
+	''' TODO '''
 	# Make text bold
 	# Set type size to large, accepts 'S', 'M', 'L'
 	# Center the text to leave lots of whitespace 
